@@ -1,21 +1,22 @@
 import axios from "axios";
+import { getToken } from "../utils/helpers/auth";
 
-const getToken = () => {
-  return sessionStorage.getItem("JWT");
-};
+// const getToken = () => {
+//   return sessionStorage.getItem("JWT");
+// };
 
 export const getDocumentCount = async () => {
   try {
-    const token = getToken();
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    // const token = getToken();
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
 
     const { data } = await axios.get(
       `http://localhost:3000/api/blogs/count/documentcount`,
-      config,
+      // config,
     );
     console.log("data from getDocumentCount", data);
     return data;
@@ -32,12 +33,12 @@ export const getDocumentCount = async () => {
 export const getAllBlogPosts = async ({ pageParam = 0 }) => {
   try {
     console.log("inside getAllBlogPosts");
-    const token = getToken();
+    // const token = getToken();
 
     const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
       params: {
         offset: pageParam,
         limit: 6,
@@ -64,17 +65,17 @@ export const getAllBlogPosts = async ({ pageParam = 0 }) => {
 export const getSingleBlogPost = async ({ id }) => {
   try {
     console.log("inside getSingleBlogPost");
-    const token = getToken();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    // const token = getToken();
+    //
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
 
     const { data } = await axios.get(
       `http://localhost:3000/api/blogs/${id}`,
-      config,
+      // config,
     );
     console.log("data from getAllBlogPosts", data);
     return data;

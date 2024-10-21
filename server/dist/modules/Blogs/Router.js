@@ -11,7 +11,7 @@ class Blog_Router_Class {
     constructor() {
         this.router = express_1.default.Router();
         this.blogControllers = new Controllers_1.BlogControllers();
-        this.setMiddlewares();
+        // this.setMiddlewares();
         this.setupRoutes();
     }
     static getInstance() {
@@ -20,18 +20,18 @@ class Blog_Router_Class {
         }
         return Blog_Router_Class.instance;
     }
-    setMiddlewares() {
-        this.router.use(authMiddleware_1.AuthMiddleware.authenticate);
-    }
+    // private setMiddlewares(): void {
+    //   this.router.use(AuthMiddleware.authenticate);
+    // }
     setupRoutes() {
         this.router.get("/", this.blogControllers.getAllContent);
         this.router.get("/:id", this.blogControllers.getContentById);
-        this.router.post("/", this.blogControllers.createContent);
-        this.router.put("/:id", this.blogControllers.updateContent);
-        this.router.delete("/:id", this.blogControllers.deleteContent);
-        this.router.get("/userblogs/:userid", this.blogControllers.getUserBlogs);
         this.router.get("/count/documentcount", this.blogControllers.getDocumentCount);
-        this.router.post("/likeunlike/:id", this.blogControllers.likeUnlikeContent);
+        this.router.post("/", authMiddleware_1.AuthMiddleware.authenticate, this.blogControllers.createContent);
+        this.router.put("/:id", authMiddleware_1.AuthMiddleware.authenticate, this.blogControllers.updateContent);
+        this.router.delete("/:id", authMiddleware_1.AuthMiddleware.authenticate, this.blogControllers.deleteContent);
+        this.router.get("/userblogs/:userid", authMiddleware_1.AuthMiddleware.authenticate, this.blogControllers.getUserBlogs);
+        this.router.post("/likeunlike/:id", authMiddleware_1.AuthMiddleware.authenticate, this.blogControllers.likeUnlikeContent);
     }
 }
 const Blog_Router_Class_instance = Blog_Router_Class.getInstance();

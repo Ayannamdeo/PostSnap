@@ -29,8 +29,18 @@ class User_Router_Class {
                 .status(200)
                 .json({ message: "Accessible by admins and normal users alike" });
         });
-        this.router.get("/admin", authMiddleware_1.AuthMiddleware.authenticate, authMiddleware_1.AuthMiddleware.restrictTo(["ADMIN"]), this.userControllers.getAllUsers);
-        this.router.delete("/admin/:id", authMiddleware_1.AuthMiddleware.authenticate, authMiddleware_1.AuthMiddleware.restrictTo(["ADMIN"]), this.userControllers.deleteUser);
+        // this.router.get(
+        //   "/admin",
+        //   AuthMiddleware.authenticate,
+        //   AuthMiddleware.restrictTo(["ADMIN"]),
+        //   this.userControllers.getAllUsers,
+        // );
+        // this.router.delete(
+        //   "/admin/:id",
+        //   AuthMiddleware.authenticate,
+        //   AuthMiddleware.restrictTo(["ADMIN"]),
+        //   this.userControllers.deleteUser,
+        // );
     }
 }
 const UserRouter = User_Router_Class.getInstance().router;

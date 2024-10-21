@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { BreadCrumbs, MainLayout } from "../../components"
+import { BreadCrumbs, MainLayout } from "../../components";
 import { getSingleBlogPost } from "../../services/blog";
 
 const breadData = [
@@ -37,21 +37,19 @@ export function ArticleDetailPage() {
   }
 
   return (
-    <MainLayout>
-      <section className="container mx-auto max-w-5xl flex flex-col p-5">
-        <article className="flex-1">
-          <BreadCrumbs breadData={breadData} />
-          <img
-            className="rounded-xl w-full"
-            src={data.imageUrl}
-            alt={data.title}
-          />
-          <h1 className="text-xl font-medium mt-4 text-slate-800">
-            {data.title}
-          </h1>
-          <div className="mt-4 text-slate-600">{data.body}</div>
-        </article>
-      </section>
-    </MainLayout>
+    <section className="container mx-auto max-w-5xl flex flex-col p-5">
+      <article className="flex-1">
+        <BreadCrumbs breadData={breadData} />
+        <img
+          className="rounded-xl w-full"
+          src={data.imageUrl}
+          alt={data.title}
+        />
+        <h1 className="text-xl font-medium mt-4 text-slate-800">
+          {data.title}
+        </h1>
+        <div className="mt-4 text-slate-600">{data.body}</div>
+      </article>
+    </section>
   );
 }

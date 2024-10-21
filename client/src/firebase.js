@@ -1,20 +1,19 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import "firebase/storage";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyB1Mye3GP0qCCkfZ9BpaHAqVvr8yTjzH0A",
-  authDomain: "bloggerproject-d7b7d.firebaseapp.com",
-  projectId: "bloggerproject-d7b7d",
-  storageBucket: "bloggerproject-d7b7d.appspot.com",
-  messagingSenderId: "209992592070",
-  appId: "1:209992592070:web:8201cc8531337c911c85c7",
+  apiKey: "AIzaSyAIHZdDIaH_2JSRpfKqNRg-tQ8sG0_mlqk",
+  authDomain: "postsnap-15c17.firebaseapp.com",
+  projectId: "postsnap-15c17",
+  storageBucket: "postsnap-15c17.appspot.com",
+  messagingSenderId: "391924389530",
+  appId: "1:391924389530:web:219c2f46f7127a079ab123",
+  measurementId: "G-6CRB31FSNV",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);
 
-export default app;

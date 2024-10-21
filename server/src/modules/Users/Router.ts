@@ -44,18 +44,18 @@ class User_Router_Class {
       },
     );
 
-    this.router.get(
-      "/admin",
-      AuthMiddleware.authenticate,
-      AuthMiddleware.restrictTo(["ADMIN"]),
-      this.userControllers.getAllUsers,
-    );
-    this.router.delete(
-      "/admin/:id",
-      AuthMiddleware.authenticate,
-      AuthMiddleware.restrictTo(["ADMIN"]),
-      this.userControllers.deleteUser,
-    );
+    // this.router.get(
+    //   "/admin",
+    //   AuthMiddleware.authenticate,
+    //   AuthMiddleware.restrictTo(["ADMIN"]),
+    //   this.userControllers.getAllUsers,
+    // );
+    // this.router.delete(
+    //   "/admin/:id",
+    //   AuthMiddleware.authenticate,
+    //   AuthMiddleware.restrictTo(["ADMIN"]),
+    //   this.userControllers.deleteUser,
+    // );
   }
 }
 

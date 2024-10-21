@@ -4,7 +4,12 @@ import { useState, useContext, useRef, useCallback, useEffect } from "react";
 
 import { getMyBlogPosts } from "../../services/blog";
 import { Mycontext } from "../../store/CreateContext";
-import { MainLayout, SkeletonArticleCard, ArticleCard, ErrorMessage } from "../../components";
+import {
+  MainLayout,
+  SkeletonArticleCard,
+  ArticleCard,
+  ErrorMessage,
+} from "../../components";
 
 export function MyPosts() {
   const { userId } = useContext(Mycontext);
@@ -20,7 +25,15 @@ export function MyPosts() {
   //   },
   // });
 
-  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useInfiniteQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    error,
+  } = useInfiniteQuery({
     queryFn: ({ pageParam = 0 }) => getMyBlogPosts({ userId, pageParam }),
     queryKey: ["myPosts"],
     getNextPageParam: (lastPage, allPages) => {
@@ -51,12 +64,15 @@ export function MyPosts() {
 
   const loadMoreRef = useRef();
   //
-  const handleObserver = useCallback((entries) => {
-    const target = entries[0];
-    if (target.isIntersecting && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, hasNextPage]);
+  const handleObserver = useCallback(
+    (entries) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage],
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
@@ -73,40 +89,39 @@ export function MyPosts() {
         observer.unobserve(loadMoreRef.current);
       }
     };
-
   }, [handleObserver]);
-
 
   if (isError) {
     console.log("error:", error);
-    return (<ErrorMessage error={error} />)
+    return <ErrorMessage error={error} />;
   }
 
   return (
-    <MainLayout>
-      <div className="bg-gradient-to-tr from-cyan-100 to-indigo-200 relative overflow-hidden min-h-screen">
-        <section className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-28 py-10">
-
-          {isLoading
-            ? [1, 2, 3].map((item, idx) => <SkeletonArticleCard key={idx} />)
-            : data.pages.map((page, pageIndex) => {
+    <div className="bg-gradient-to-tr from-cyan-100 to-indigo-200 relative overflow-hidden min-h-screen">
+      <section className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-28 py-10">
+        {isLoading
+          ? [1, 2, 3].map((item, idx) => <SkeletonArticleCard key={idx} />)
+          : data.pages.map((page, pageIndex) => {
               console.log("page inside data.pages.map: ", page);
-              console.log("page.userPosts inside data.pages.map: ", page.userPosts);
-              return page.userPosts.map((post) => <ArticleCard key={post._id} post={post} showedit={true} showLike={false} />)
+              console.log(
+                "page.userPosts inside data.pages.map: ",
+                page.userPosts,
+              );
+              return page.userPosts.map((post) => (
+                <ArticleCard
+                  key={post._id}
+                  post={post}
+                  showedit={true}
+                  showLike={false}
+                />
+              ));
             })}
 
-          {isFetchingNextPage && (
-            [1, 2, 3].map((item, idx) => (
-              <SkeletonArticleCard key={idx} />
-            ))
-          )}
+        {isFetchingNextPage &&
+          [1, 2, 3].map((item, idx) => <SkeletonArticleCard key={idx} />)}
 
-          <div ref={loadMoreRef} />
-        </section>
-      </div>
-    </MainLayout>
+        <div ref={loadMoreRef} />
+      </section>
+    </div>
   );
 }
-
-
-

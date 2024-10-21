@@ -12,6 +12,7 @@ import { Privateroutes } from "./feature/PrivateRoutes";
 import { MyPosts } from "./pages/myPosts/MyPosts";
 import { CreateBlog } from "./pages/createArticle/CreateBlog";
 import { EditBlog } from "./pages/editArticle/EditBlog";
+import { MainLayout } from "./components";
 
 function App() {
   const [userName, setUserName] = useState("");
@@ -21,35 +22,52 @@ function App() {
 
   return (
     <>
-    <Mycontext.Provider value={{userName, setUserName, userEmail, setUserEmail, isAuth, setIsAuth, userId, setUserId}}>
-    <div>
-      <Routes>
-        {/* <Route path="/" element={<HomePage />} /> */}
-        <Route path="/" element={<HomePage />} />
+      <Mycontext.Provider
+        value={{
+          userName,
+          setUserName,
+          userEmail,
+          setUserEmail,
+          isAuth,
+          setIsAuth,
+          userId,
+          setUserId,
+        }}
+      >
+        <div>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/blogs/" element={<Blogs />} />
+              <Route path="/blogs/:id" element={<ArticleDetailPage />} />
 
-        <Route path="/blogs/" element={<Privateroutes isAuth={isAuth} />} >
-           <Route path="/blogs/" element={<Blogs />} />
-           <Route path="/blogs/:id" element={<ArticleDetailPage />} />
-        </Route>
+              <Route element={<Privateroutes />}>
+                <Route path="/myposts/" element={<MyPosts />} />
+                <Route path="/create/" element={<CreateBlog />} />
+                <Route path="/edit/:id" element={<EditBlog />} />
+              </Route>
 
-        <Route path="/myposts/" element={<Privateroutes isAuth={isAuth}/>} >
-          <Route path="/myposts/" element={<MyPosts />}/>
-        </Route>
+              {/* <Route path="/blogs/" element={<Privateroutes isAuth={isAuth} />} > */}
+              {/*    <Route path="/blogs/" element={<Blogs />} /> */}
+              {/*    <Route path="/blogs/:id" element={<ArticleDetailPage />} /> */}
+              {/* </Route> */}
+              {/* <Route path="/myposts/" element={<Privateroutes isAuth={isAuth}/>} > */}
+              {/*   <Route path="/myposts/" element={<MyPosts />}/> */}
+              {/* </Route> */}
+              {/* <Route path="/create/" element={<Privateroutes isAuth={isAuth}/>} > */}
+              {/*   <Route path="/create/" element={<CreateBlog />}/> */}
+              {/* </Route> */}
+              {/* <Route path="/edit/:id" element={<Privateroutes isAuth={isAuth}/>} > */}
+              {/*   <Route path="/edit/:id" element={<EditBlog />}/> */}
+              {/* </Route> */}
 
-        <Route path="/create/" element={<Privateroutes isAuth={isAuth}/>} >
-          <Route path="/create/" element={<CreateBlog />}/>
-        </Route>
-
-        <Route path="/edit/:id" element={<Privateroutes isAuth={isAuth}/>} >
-          <Route path="/edit/:id" element={<EditBlog />}/>
-        </Route>
-
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage setIsAuth={setIsAuth}/>} />
-      </Routes>
-      <Toaster />
-    </div>
-    </Mycontext.Provider>
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+            </Route>
+          </Routes>
+          <Toaster />
+        </div>
+      </Mycontext.Provider>
     </>
   );
 }
