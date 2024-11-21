@@ -6,7 +6,6 @@ import { toast } from "react-hot-toast";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 
-import { MainLayout } from "../../components";
 import { getSingleBlogPost, updateBlogPost } from "../../services/blog";
 import { deleteBlogPost } from "../../services/blog";
 
@@ -72,7 +71,7 @@ export const EditBlog = () => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        toast.success("Upload is " + progress + "% done");
+        toast.success("Image Uploading is " + progress + "% done");
       },
       (error) => {
         console.log("Error during upload:", error);
@@ -83,7 +82,6 @@ export const EditBlog = () => {
           setImageUrl(downloadURL);
           setimageUploaded(true);
           console.log("File available at", downloadURL);
-          console.log(imageUploaded);
         });
       },
     );
@@ -106,7 +104,6 @@ export const EditBlog = () => {
 
   const submitHandler = (data) => {
     const { title, body } = data;
-    console.log("imageUrl", imageUrl);
     updateMutation.mutate({ title, body, imageUrl });
   };
 

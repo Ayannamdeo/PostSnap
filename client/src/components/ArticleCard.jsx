@@ -1,14 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Mycontext } from "../store/CreateContext";
 
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 
-
-
-const ArticleCard = ({ post, showedit, handleLikeUnlike, userId, showLike = true }) => {
+const ArticleCard = ({ post, showedit, handleLikeUnlike, userId, showLike = true, }) => {
   // const {userName} = useContext(Mycontext);
   // console.log("//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
   const { title, createdAt, imageUrl, _id, userName } = post;
@@ -24,9 +21,8 @@ const ArticleCard = ({ post, showedit, handleLikeUnlike, userId, showLike = true
   });
 
   function handleClick() {
-    console.log("button Clicked");
     handleLikeUnlike(userId, _id);
-    setIsLiked(prevS => !prevS);
+    setIsLiked((prevS) => !prevS);
   }
 
   return (
@@ -47,33 +43,38 @@ const ArticleCard = ({ post, showedit, handleLikeUnlike, userId, showLike = true
           <time dateTime={formattedDate}>{formattedDate}</time>
           {/* <img src="https://images.pexels.com/photos/1262302/pexels-photo-1262302.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" className="h-10 w-10 flex-none rounded-full bg-white/10" /> */}
           <p> {userName} </p>
-          {showLike &&
+          {showLike && (
             <>
               <button onClick={handleClick}>
-                {isLiked ? (<SolidHeartIcon className="text-red-500 w-6 h-6" />) : (<OutlineHeartIcon className="text-red-500 w-6 h-6" />)}
+                {isLiked ? (
+                  <SolidHeartIcon className="text-red-500 w-6 h-6" />
+                ) : (
+                  <OutlineHeartIcon className="text-red-500 w-6 h-6" />
+                )}
               </button>
               <span className="text-red-500"> {post.likes.length}</span>
             </>
-          }
-
+          )}
         </div>
         <h3 className="absolute bottom-20 left-8 right-8 text-lg font-semibold leading-6 text-white">
           <Link to={`/blogs/${id}`} className="relative z-10">
             {title}
           </Link>
         </h3>
-        {showedit ? <div className="absolute top-4 right-4">
-          <Link to={`/edit/${id}`} className="text-red-400 underline">
-            <PencilSquareIcon className="text-indigo-400 w-7 h-7" />
-          </Link>
-        </div> : <></>}
-
+        {showedit ? (
+          <div className="absolute top-4 right-4">
+            <Link to={`/edit/${id}`} className="text-red-400 underline">
+              <PencilSquareIcon className="text-indigo-400 w-7 h-7" />
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )}
       </article>
     </div>
   );
-}
+};
 
 const MemoizedArticleCard = React.memo(ArticleCard);
-console.log("MemoizedArticleCard is invoked //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
 
 export { MemoizedArticleCard as ArticleCard };

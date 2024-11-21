@@ -1,7 +1,6 @@
 import React from "react";
 
 const Footer = () => {
-  console.log("footer called");
   return (
     <div>
       <footer className="container mx-auto px-5 flex justify-center py-4 items-center">
@@ -9,8 +8,7 @@ const Footer = () => {
       </footer>
     </div>
   );
-}
-
+};
 
 const MemoizedFooter = React.memo(Footer);
 

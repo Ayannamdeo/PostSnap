@@ -1,9 +1,8 @@
 import axios from "axios";
 import { getToken } from "../utils/helpers/auth";
 
-// const getToken = () => {
-//   return sessionStorage.getItem("JWT");
-// };
+const API_URL = import.meta.env.VITE_API_URL;
+console.log("blog api_url: ", API_URL);
 
 export const getDocumentCount = async () => {
   try {
@@ -15,7 +14,7 @@ export const getDocumentCount = async () => {
     // };
 
     const { data } = await axios.get(
-      `http://localhost:3000/api/blogs/count/documentcount`,
+      `${API_URL}/blogs/count/documentcount`,
       // config,
     );
     console.log("data from getDocumentCount", data);
@@ -46,10 +45,7 @@ export const getAllBlogPosts = async ({ pageParam = 0 }) => {
       },
     };
 
-    const { data } = await axios.get(
-      "http://localhost:3000/api/blogs/",
-      config,
-    );
+    const { data } = await axios.get(`${API_URL}/blogs/`, config);
     console.log("data from getAllBlogPosts", data);
     return data;
   } catch (error) {
@@ -74,7 +70,7 @@ export const getSingleBlogPost = async ({ id }) => {
     // };
 
     const { data } = await axios.get(
-      `http://localhost:3000/api/blogs/${id}`,
+      `${API_URL}/blogs/${id}`,
       // config,
     );
     console.log("data from getAllBlogPosts", data);
@@ -97,11 +93,7 @@ export const createBlogPost = async (postBody) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.post(
-      "http://localhost:3000/api/blogs/",
-      postBody,
-      config,
-    );
+    const { data } = await axios.post(`${API_URL}/blogs/`, postBody, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {
@@ -113,7 +105,6 @@ export const createBlogPost = async (postBody) => {
 
 export const updateBlogPost = async ({ id, title, body, imageUrl }) => {
   try {
-    // console.log();
     const token = getToken();
     const config = {
       headers: {
@@ -121,7 +112,7 @@ export const updateBlogPost = async ({ id, title, body, imageUrl }) => {
       },
     };
     const { data } = await axios.put(
-      `http://localhost:3000/api/blogs/${id}`,
+      `${API_URL}/blogs/${id}`,
       { title, body, imageUrl },
       config,
     );
@@ -152,7 +143,7 @@ export const getMyBlogPosts = async ({ userId, pageParam }) => {
     };
 
     const { data } = await axios.get(
-      `http://localhost:3000/api/blogs/userblogs/${userId}`,
+      `${API_URL}/blogs/userblogs/${userId}`,
       config,
     );
     return data;
@@ -175,10 +166,7 @@ export const deleteBlogPost = async ({ id }) => {
       },
     };
 
-    const { data } = await axios.delete(
-      `http://localhost:3000/api/blogs/${id}`,
-      config,
-    );
+    const { data } = await axios.delete(`${API_URL}/blogs/${id}`, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message) {
@@ -204,7 +192,7 @@ export const likeUnlikePost = async ({ userId, postId }) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:3000/api/blogs/likeunlike/${postId}`,
+      `${API_URL}/blogs/likeunlike/${postId}`,
       { userId },
       config,
     );

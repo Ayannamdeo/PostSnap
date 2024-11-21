@@ -1,15 +1,10 @@
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import {  useInfiniteQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { useState, useContext, useRef, useCallback, useEffect } from "react";
+import {  useContext, useRef, useCallback, useEffect } from "react";
 
 import { getMyBlogPosts } from "../../services/blog";
 import { Mycontext } from "../../store/CreateContext";
-import {
-  MainLayout,
-  SkeletonArticleCard,
-  ArticleCard,
-  ErrorMessage,
-} from "../../components";
+import { SkeletonArticleCard, ArticleCard, ErrorMessage, } from "../../components";
 
 export function MyPosts() {
   const { userId } = useContext(Mycontext);
@@ -37,14 +32,10 @@ export function MyPosts() {
     queryFn: ({ pageParam = 0 }) => getMyBlogPosts({ userId, pageParam }),
     queryKey: ["myPosts"],
     getNextPageParam: (lastPage, allPages) => {
-      console.log("inside getNextPageParam lastpage:", lastPage);
       const totalDocCount = lastPage.totalUserPosts;
       const totalPages = Math.ceil(totalDocCount / 6); // Calculate total number of pages
-      console.log("total Pages: ", totalPages);
-      console.log("allPages", allPages);
 
       if (allPages.length >= totalPages) {
-        console.log("No more pages left to fetch");
         return undefined;
       }
       return allPages.length * 6;
@@ -56,11 +47,11 @@ export function MyPosts() {
     },
   });
 
-  useEffect(() => {
-    if (data) {
-      console.log("data from Myposts, useInfiniteQuery: ", data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log("data from Myposts, useInfiniteQuery: ", data);
+  //   }
+  // }, [data]);
 
   const loadMoreRef = useRef();
   //
@@ -101,7 +92,7 @@ export function MyPosts() {
       <section className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-28 py-10">
         {isLoading
           ? [1, 2, 3].map((item, idx) => <SkeletonArticleCard key={idx} />)
-          : data.pages.map((page, pageIndex) => {
+          : data.pages.map((page, ) => {
               console.log("page inside data.pages.map: ", page);
               console.log(
                 "page.userPosts inside data.pages.map: ",

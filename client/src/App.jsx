@@ -1,17 +1,19 @@
+
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 
-import { HomePage } from "./pages/home/HomePage";
-import { ArticleDetailPage } from "./pages/articleDetail/ArticleDetailPage";
-import { RegisterPage } from "./pages/register/RegisterPage";
-import { LoginPage } from "./pages/login/LoginPage";
-import { Blogs } from "./pages/blogs/Blogs";
+const HomePage = lazy(() => import("./pages/home/HomePage").then(module => ({default: module.HomePage})));
+const ArticleDetailPage = lazy(() => import("./pages/articleDetail/ArticleDetailPage").then(module => ({default: module.ArticleDetailPage})));
+const RegisterPage = lazy(()=> import("./pages/register/RegisterPage").then(module => ({default: module.RegisterPage})));
+const LoginPage = lazy(() => import("./pages/login/LoginPage").then(module => ({default: module.LoginPage})));
+const Blogs = lazy(()=> import("./pages/blogs/Blogs").then(module => ({default: module.Blogs})));
+const MyPosts = lazy(()=> import("./pages/myPosts/MyPosts").then(module => ({default: module.MyPosts})));
+const CreateBlog = lazy(()=> import("./pages/createArticle/CreateBlog").then(module => ({default: module.CreateBlog})));
+const EditBlog = lazy(()=> import("./pages/editArticle/EditBlog").then(module => ({default: module.EditBlog})));
+const Privateroutes = lazy(()=> import("./feature/PrivateRoutes").then(module => ({default: module.Privateroutes})));
+
 import { Mycontext } from "./store/CreateContext";
-import { Privateroutes } from "./feature/PrivateRoutes";
-import { MyPosts } from "./pages/myPosts/MyPosts";
-import { CreateBlog } from "./pages/createArticle/CreateBlog";
-import { EditBlog } from "./pages/editArticle/EditBlog";
 import { MainLayout } from "./components";
 
 function App() {
@@ -23,53 +25,64 @@ function App() {
   return (
     <>
       <Mycontext.Provider
-        value={{
-          userName,
-          setUserName,
-          userEmail,
-          setUserEmail,
-          isAuth,
-          setIsAuth,
-          userId,
-          setUserId,
-        }}
-      >
-        <div>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/blogs/" element={<Blogs />} />
-              <Route path="/blogs/:id" element={<ArticleDetailPage />} />
-
-              <Route element={<Privateroutes />}>
-                <Route path="/myposts/" element={<MyPosts />} />
-                <Route path="/create/" element={<CreateBlog />} />
-                <Route path="/edit/:id" element={<EditBlog />} />
-              </Route>
-
-              {/* <Route path="/blogs/" element={<Privateroutes isAuth={isAuth} />} > */}
-              {/*    <Route path="/blogs/" element={<Blogs />} /> */}
-              {/*    <Route path="/blogs/:id" element={<ArticleDetailPage />} /> */}
-              {/* </Route> */}
-              {/* <Route path="/myposts/" element={<Privateroutes isAuth={isAuth}/>} > */}
-              {/*   <Route path="/myposts/" element={<MyPosts />}/> */}
-              {/* </Route> */}
-              {/* <Route path="/create/" element={<Privateroutes isAuth={isAuth}/>} > */}
-              {/*   <Route path="/create/" element={<CreateBlog />}/> */}
-              {/* </Route> */}
-              {/* <Route path="/edit/:id" element={<Privateroutes isAuth={isAuth}/>} > */}
-              {/*   <Route path="/edit/:id" element={<EditBlog />}/> */}
-              {/* </Route> */}
-
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/login" element={<LoginPage />} />
+        value={{ userName, setUserName, userEmail, setUserEmail, isAuth, setIsAuth, userId, setUserId, }} >
+        <Routes>
+          <Route element={<MainLayout />}>
+            {/* Lazy loading each route individually */}
+            <Route path="/" element={
+                <Suspense fallback={<div>Loading HomePage...</div>}>
+                  <HomePage />
+                </Suspense>
+              } />
+            <Route path="/blogs" element={
+                <Suspense fallback={<div>Loading Blogs...</div>}>
+                  <Blogs />
+                </Suspense>
+              } />
+            <Route path="/blogs/:id" element={
+                <Suspense fallback={<div>Loading ArticleDetail...</div>}>
+                  <ArticleDetailPage />
+                </Suspense>
+              } />
+            <Route path="/register" element={
+                <Suspense fallback={<div>Loading RegisterPage...</div>}>
+                  <RegisterPage />
+                </Suspense>
+              } />
+            <Route path="/login" element={
+                <Suspense fallback={<div>Loading LoginPage...</div>}>
+                  <LoginPage />
+                </Suspense>
+              } />
+            {/* Private Routes */}
+            <Route element={
+                <Suspense fallback={<div>Loading PrivateRoutes...</div>}>
+                  <Privateroutes />
+                </Suspense>
+              } >
+              <Route path="/myposts" element={
+                  <Suspense fallback={<div>Loading MyPosts...</div>}>
+                    <MyPosts />
+                  </Suspense>
+                } />
+              <Route path="/create" element={
+                  <Suspense fallback={<div>Loading CreateBlog...</div>}>
+                    <CreateBlog />
+                  </Suspense>
+                } />
+              <Route path="/edit/:id" element={
+                  <Suspense fallback={<div>Loading EditBlog...</div>}>
+                    <EditBlog />
+                  </Suspense>
+                } />
             </Route>
-          </Routes>
-          <Toaster />
-        </div>
+          </Route>
+        </Routes>
+        <Toaster />
       </Mycontext.Provider>
     </>
   );
 }
 
 export default App;
+

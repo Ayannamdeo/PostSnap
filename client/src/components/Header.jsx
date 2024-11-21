@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { useNavigate , Link} from "react-router-dom";
-import { Mycontext } from "../store/CreateContext";
+import { useNavigate, Link } from "react-router-dom";
+import { isAuthenticated, removeToken } from "../utils/helpers/auth";
 
 const navItemsInfo = [
   { name: "Home", link: "/" },
   { name: "Blogs", link: "/blogs" },
-  { name: "MyPosts", link: "/myposts"},
+  { name: "MyPosts", link: "/myposts" },
   { name: "CreateBlog", link: "/create" },
   // { name: "About" },
 ];
 
-const NavItem = ({ name , link}) => {
-  console.log("name:", name);
+// <NavItem key={item.name} name={item.name} link={item.link}/>
+const NavItem = ({ name, link }) => {
   return (
     <li className=" relative group">
       <Link to={link} className="px-4 py-2">
@@ -25,50 +25,57 @@ const NavItem = ({ name , link}) => {
 };
 
 const Header = () => {
-  const {isAuth, setIsAuth} = useContext(Mycontext);
-  console.log("/////////////isAuth:",isAuth);
+  const isAuth = isAuthenticated();
+  // const {isAuth, setIsAuth} = useContext(Mycontext);
+  console.log("/////////////isAuth:", isAuth);
   const navigate = useNavigate();
 
   const handleSignin = () => {
-    navigate("/register")
-  }
+    navigate("/register");
+  };
 
   const handleSignOut = () => {
-sessionStorage.removeItem("JWT");
-  sessionStorage.removeItem("tokenExpiry");
-  setIsAuth(prevS => !prevS);
-  navigate("/login");
-  }
+    removeToken();
+    // sessionStorage.removeItem("JWT");
+    // sessionStorage.removeItem("tokenExpiry");
+    // setIsAuth(prevS => !prevS);
+    navigate("/login");
+  };
 
   return (
     <section>
       <header className="container mx-auto px-5 flex justify-between py-4 items-center">
         <div className="">
-          <p>
-          Ayan's Blog
-          </p>
+          <p>PostSnap</p>
         </div>
         <div className="flex gap-x-9 items-center">
           <ul className="flex gap-x-2 font-semibold ">
-            {navItemsInfo.map((item) => ( 
-              <NavItem key={item.name} name={item.name} link={item.link}/>
-             ))}
+            {navItemsInfo.map((item) => (
+              <NavItem name={item.name} link={item.link} key={item.name} />
+            ))}
           </ul>
-          {isAuth ?
-          <button onClick={handleSignOut} className="border-2 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300">
-          Sign Out
-          </button>
-           : 
-          <button onClick={handleSignin} className="border-2 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300">
-            Sign In
-          </button>
-          }
+          {isAuth ? (
+            <button
+              onClick={handleSignOut}
+              className="border-2 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300"
+            >
+              Sign Out
+            </button>
+          ) : (
+            <button
+              onClick={handleSignin}
+              className="border-2 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300"
+            >
+              Sign In
+            </button>
+          )}
         </div>
       </header>
     </section>
   );
-}
+};
 
 const MemoizedHeader = React.memo(Header);
 
 export { MemoizedHeader as Header };
+

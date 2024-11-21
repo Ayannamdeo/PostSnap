@@ -8,14 +8,9 @@ import { storage } from "../../firebase";
 
 import { createBlogPost } from "../../services/blog";
 import { Mycontext } from "../../store/CreateContext";
-import { MainLayout } from "../../components";
 
 export const CreateBlog = () => {
-  const { isAuth, userId, userName } = useContext(Mycontext);
-
-  console.log("inside CreateBlog");
-  console.log("isAuth", isAuth);
-  console.log("userId", userId);
+  const { userId, userName } = useContext(Mycontext);
 
   const [imageUrl, setImageUrl] = useState("");
   const navigate = useNavigate();
@@ -42,7 +37,7 @@ export const CreateBlog = () => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        toast.success("Upload is " + progress + "% done");
+        toast.success("Image Uploading is " + progress + "% done");
       },
       (error) => {
         console.log("Error during upload:", error);
@@ -59,7 +54,6 @@ export const CreateBlog = () => {
   const submitHandler = async (data) => {
     const { title, body } = data;
     const user = userId;
-    console.log("imageUrl", imageUrl);
     mutate({ title, body, user, imageUrl, userName });
   };
   const handleImageChange = (e) => {

@@ -30,7 +30,6 @@ export function RegisterPage() {
   // })
 
   const submitHandler = (data) => {
-    console.log(data);
     const { name, email, password } = data;
     mutate({ name, email, password });
   };

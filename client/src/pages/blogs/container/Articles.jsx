@@ -116,8 +116,6 @@ export function Articles() {
   const likeUnlikeMutation = useMutation({
     mutationFn: ({ userId, postId }) => likeUnlikePost({ userId, postId }),
     onSuccess: (post, variables) => {
-      console.log("data from likeUnilkeMutation: ", post);
-      console.log("like count: ", post.likes.length);
       toast.success("likeunlike success");
 
       queryClient.setQueryData(["posts"], (oldData) => {
@@ -143,9 +141,6 @@ export function Articles() {
   });
 
   const handleLikeUnlike = (userId, postId) => {
-    console.log("handliLikeUnlike onClickddddddddddddddddddddddd");
-    console.log("userid inside handleLIKEunlike:", userId);
-    console.log("postId inside handleLIKEunlike:", postId);
     if (!isAuthenticated()) {
       navigate("/login");
       toast.error("Please login to do this action");
@@ -165,7 +160,7 @@ export function Articles() {
     <section className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-28 py-10">
       {isLoading
         ? [1, 2, 3].map((item, idx) => <SkeletonArticleCard key={idx} />)
-        : data.pages.map((page, pageIndex) =>
+        : data.pages.map((page) =>
             page.map((post) => (
               <ArticleCard
                 key={post._id}

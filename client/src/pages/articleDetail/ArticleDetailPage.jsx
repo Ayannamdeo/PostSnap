@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { BreadCrumbs, MainLayout } from "../../components";
+import { BreadCrumbs } from "../../components";
 import { getSingleBlogPost } from "../../services/blog";
 
 const breadData = [
@@ -13,7 +13,6 @@ const breadData = [
 
 export function ArticleDetailPage() {
   const { id } = useParams();
-  console.log("id", id);
 
   const { data, isLoading, isError, error } = useQuery({
     queryFn: () => getSingleBlogPost({ id }),

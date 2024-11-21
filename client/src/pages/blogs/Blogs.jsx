@@ -1,5 +1,4 @@
 import { Articles } from "./container/Articles";
-import { MainLayout } from "../../components";
 
 export const Blogs = () => {
   return (
